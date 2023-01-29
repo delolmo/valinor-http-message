@@ -40,6 +40,6 @@ final class CustomController
 
 ## Final notes
 
-- Versioning of `delolmo/valinor-console` will always match `cuyz/valinor` versions. Same goes for PHP versions.
+- Versioning of `delolmo/valinor-http-message` will always match `cuyz/valinor` versions. Same goes for PHP versions.
 - Although query params and body params should not share the same name in the Request, it should be noted that, from a ServerRequestSource standpoint, query params always take precedence over body params. That is, if there is a query param and a body param sharing the same name, ServerRequestSource will only use the query param's value for mapping purposes.
 - Considering that many query and body params are retrieved as strings or arrays, it is interesting to note that `enableFlexibleCasting` should also be configured in the Mapper. See [Enabling flexible casting](https://valinor.cuyz.io/latest/mapping/type-strictness/#enabling-flexible-casting) for more information.
