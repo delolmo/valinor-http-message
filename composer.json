@@ -3,7 +3,7 @@
     "description": "Use psr/http-message as a Valinor source",
     "type": "library",
     "require": {
-        "php": "^8.2",
+        "php": "~8.0.0 || ~8.1.0 || ~8.2.0",
         "cuyz/valinor": "^1.2",
         "psr/http-message": "^1.0"
     },
@@ -33,12 +33,12 @@
     },
     "autoload": {
         "psr-4": {
-            "DelOlmo\\Valinor\\Source\\": "src/"
+            "DelOlmo\\Valinor\\Mapper\\Source\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DelOlmoPro\\Valinor\\Source\\": "tests/"
+            "DelOlmo\\Valinor\\Mapper\\Source\\": "tests/"
         }
     },
     "authors": [
