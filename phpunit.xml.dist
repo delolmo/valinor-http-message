@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
-        backupGlobals="false"
-        colors="true"
-        verbose="true"
-        beStrictAboutOutputDuringTests="true"
-        bootstrap="vendor/autoload.php"
->
-  <coverage processUncoveredFiles="true">
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.4/phpunit.xsd" 
+         backupGlobals="false" 
+         colors="true" 
+         beStrictAboutOutputDuringTests="true" 
+         bootstrap="vendor/autoload.php" 
+         cacheDirectory=".phpunit.cache">
+  <coverage/>
+  <testsuites>
+    <testsuite name="delolmopro/model">
+      <directory>tests</directory>
+    </testsuite>
+  </testsuites>
+  <source>
     <include>
       <directory>./src</directory>
     </include>
@@ -16,10 +20,5 @@
       <directory>./tests</directory>
       <directory>./vendor</directory>
     </exclude>
-  </coverage>
-  <testsuites>
-    <testsuite name="delolmopro/model">
-      <directory>tests</directory>
-    </testsuite>
-  </testsuites>
+  </source>
 </phpunit>
