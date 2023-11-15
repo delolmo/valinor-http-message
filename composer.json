@@ -53,7 +53,10 @@
         "lint": "parallel-lint ./src",
         "phpcbf": "phpcbf",
         "phpcs": "phpcs",
-        "phpstan": "phpstan analyse --xdebug --memory-limit 1G",
+        "phpstan": [
+            "@putenv XDEBUG_MODE=off",
+            "phpstan analyse --xdebug --memory-limit 1G"
+        ],
         "phpunit": "phpunit --configuration phpunit.xml.dist",
         "psalm": "psalm --config psalm.xml",
         "rector": "rector process --dry-run",
