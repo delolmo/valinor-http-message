@@ -15,9 +15,9 @@ final class ServerRequestSourceTest extends TestCase
     {
         $request = $this->createMock(ServerRequestInterface::class);
 
-        $source = new ServerRequestSource($request);
+        $serverRequestSource = new ServerRequestSource($request);
 
-        Assert::assertSame($request, $source->getRequest());
+        Assert::assertSame($request, $serverRequestSource->getRequest());
     }
 
     public function testGetIterator(): void

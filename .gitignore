@@ -1,8 +1,3 @@
-/coverage
-/nbproject
 /var
 /vendor
-/clover.xml
-/infection.log
-/.php_cs.cache
-/.phpunit.cache
+/composer.lock

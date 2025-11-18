@@ -5,7 +5,7 @@
          colors="true" 
          beStrictAboutOutputDuringTests="true" 
          bootstrap="vendor/autoload.php" 
-         cacheDirectory=".phpunit.cache">
+         cacheDirectory="var/phpunit">
   <coverage/>
   <testsuites>
     <testsuite name="delolmopro/model">

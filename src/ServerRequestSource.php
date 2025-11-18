@@ -6,6 +6,7 @@ namespace DelOlmo\Valinor\Mapper\Source;
 
 use ArrayObject;
 use IteratorAggregate;
+use Override;
 use Psr\Http\Message\ServerRequestInterface;
 use Traversable;
 
@@ -16,20 +17,21 @@ use function is_array;
 final class ServerRequestSource implements IteratorAggregate
 {
     public function __construct(
-        private ServerRequestInterface $request,
+        private readonly ServerRequestInterface $serverRequest,
     ) {
     }
 
     /** @return Traversable<string, mixed> */
+    #[Override]
     public function getIterator(): Traversable
     {
-        $attributes = $this->getRequest()->getAttributes();
+        $attributes = $this->serverRequest->getAttributes();
 
-        $queryParams = $this->getRequest()->getQueryParams();
+        $queryParams = $this->serverRequest->getQueryParams();
 
         $parameters = array_merge($queryParams, $attributes);
 
-        $parsedBody = $this->getRequest()->getParsedBody();
+        $parsedBody = $this->serverRequest->getParsedBody();
 
         if (! is_array($parsedBody)) {
             return new ArrayObject($parameters);
@@ -42,6 +44,6 @@ final class ServerRequestSource implements IteratorAggregate
 
     public function getRequest(): ServerRequestInterface
     {
-        return $this->request;
+        return $this->serverRequest;
     }
 }
