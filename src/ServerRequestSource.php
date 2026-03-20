@@ -14,10 +14,10 @@ use function array_merge;
 use function is_array;
 
 /** @implements IteratorAggregate<string, mixed> */
-final class ServerRequestSource implements IteratorAggregate
+final readonly class ServerRequestSource implements IteratorAggregate
 {
     public function __construct(
-        private readonly ServerRequestInterface $serverRequest,
+        private ServerRequestInterface $serverRequest,
     ) {
     }
 
