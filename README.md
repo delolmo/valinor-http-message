@@ -7,7 +7,7 @@ Use a [PSR-7](https://www.php-fig.org/psr/psr-7/) `ServerRequestInterface` as a 
 
 ## Requirements
 
-* PHP ^8.4.27
+* PHP ~8.4.27 || ^8.5.12
 * cuyz/valinor ^2.6
 
 ## Installation
