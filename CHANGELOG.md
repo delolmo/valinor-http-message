@@ -8,7 +8,7 @@ All notable changes to this project are documented in this file. The format foll
 
 ### Security
 
-- Require PHP 8.4.27 or later, the release fixing CVE-2026-109618 and CVE-2026-109619.
+- Require PHP 8.4.27 or later on 8.4 and 8.5.12 or later on 8.5, the releases fixing CVE-2026-109618 and CVE-2026-109619.
 
 ### Changed
 
