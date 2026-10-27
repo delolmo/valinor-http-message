@@ -13,7 +13,14 @@ use Traversable;
 use function array_merge;
 use function is_array;
 
-/** @implements IteratorAggregate<string, mixed> */
+/**
+ * A Valinor source holding a server request's parsed body, query params and
+ * attributes. On a shared key, attributes win over query params, and query
+ * params over the parsed body. A parsed body that is not an array (null or
+ * an object) and uploaded files are left out.
+ *
+ * @implements IteratorAggregate<string, mixed>
+ */
 final readonly class ServerRequestSource implements IteratorAggregate
 {
     public function __construct(
