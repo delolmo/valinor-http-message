@@ -2,68 +2,117 @@
 
 declare(strict_types=1);
 
-namespace DelOlmo\Valinor\Mapper\Source;
+namespace DelOlmo\Valinor\Mapper\Source\Tests;
 
-use ArrayObject;
+use CuyZ\Valinor\Mapper\Source\Source;
+use CuyZ\Valinor\MapperBuilder;
+use DelOlmo\Valinor\Mapper\Source\ServerRequestSource;
+use DelOlmo\Valinor\Mapper\Source\Tests\Fixtures\SearchQuery;
+use Laminas\Diactoros\ServerRequest;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ServerRequestInterface;
+use stdClass;
 
+use function iterator_to_array;
+
+#[CoversClass(ServerRequestSource::class)]
 final class ServerRequestSourceTest extends TestCase
 {
-    public function testGetRequest(): void
+    #[TestDox('getRequest() returns the request the source was built from')]
+    public function testGetRequestReturnsTheWrappedRequest(): void
     {
-        $request = $this->createMock(ServerRequestInterface::class);
+        $request = new ServerRequest();
 
         $serverRequestSource = new ServerRequestSource($request);
 
         Assert::assertSame($request, $serverRequestSource->getRequest());
     }
 
-    public function testGetIterator(): void
+    /**
+     * @param array<string, mixed>             $queryParams
+     * @param array<string, mixed>|object|null $parsedBody
+     * @param array<string, int|string>        $attributes
+     * @param array<string, mixed>             $expected
+     */
+    #[DataProvider('parameterProvider')]
+    #[TestDox('getIterator() yields $_dataName')]
+    public function testGetIteratorMergesRequestParameters(
+        array $queryParams,
+        array|object|null $parsedBody,
+        array $attributes,
+        array $expected,
+    ): void {
+        $request = new ServerRequest(queryParams: $queryParams, parsedBody: $parsedBody);
+
+        foreach ($attributes as $name => $value) {
+            $request = $request->withAttribute($name, $value);
+        }
+
+        $parameters = iterator_to_array(new ServerRequestSource($request));
+
+        Assert::assertSame($expected, $parameters);
+    }
+
+    /**
+     * @return iterable<string, array{
+     *     array<string, mixed>,
+     *     array<string, mixed>|object|null,
+     *     array<string, int|string>,
+     *     array<string, mixed>,
+     * }>
+     */
+    public static function parameterProvider(): iterable
     {
-        $queryParams = ['foo' => 'bar'];
-        $parsedBody  = ['foo' => 'baz'];
-        $attributes  = ['foo' => 'biz'];
+        yield 'attributes over query params and parsed body' => [
+            ['foo' => 'query'],
+            ['foo' => 'body'],
+            ['foo' => 'attribute'],
+            ['foo' => 'attribute'],
+        ];
 
-        // Check attributes replace everything else
-        $requestx1 = $this->createMock(ServerRequestInterface::class);
-        $requestx1->method('getQueryParams')->willReturn($queryParams);
-        $requestx1->method('getParsedBody')->willReturn($parsedBody);
-        $requestx1->method('getAttributes')->willReturn($attributes);
+        yield 'query params over the parsed body' => [
+            ['foo' => 'query'],
+            ['foo' => 'body'],
+            [],
+            ['foo' => 'query'],
+        ];
 
-        $sourcex1   = new ServerRequestSource($requestx1);
-        $expectedx1 = new ArrayObject(['foo' => 'biz']);
-        Assert::assertEquals($expectedx1, $sourcex1->getIterator());
+        yield 'the keys of all three, body first' => [
+            ['query' => 1],
+            ['body' => 2],
+            ['attribute' => 3],
+            ['body' => 2, 'query' => 1, 'attribute' => 3],
+        ];
 
-        // Check query params replace parsedBody
-        $requestx2 = $this->createMock(ServerRequestInterface::class);
-        $requestx2->method('getQueryParams')->willReturn($queryParams);
-        $requestx2->method('getParsedBody')->willReturn($parsedBody);
-        $requestx2->method('getAttributes')->willReturn([]);
+        yield 'no parsed body when there is none' => [
+            ['foo' => 'query'],
+            null,
+            ['bar' => 'attribute'],
+            ['foo' => 'query', 'bar' => 'attribute'],
+        ];
 
-        $sourcex2   = new ServerRequestSource($requestx2);
-        $expectedx2 = new ArrayObject(['foo' => 'bar']);
-        Assert::assertEquals($expectedx2, $sourcex2->getIterator());
+        yield 'no parsed body when it is an object' => [
+            ['foo' => 'query'],
+            new stdClass(),
+            [],
+            ['foo' => 'query'],
+        ];
+    }
 
-        // Check parsed body params are added correctly
-        $requestx3 = $this->createMock(ServerRequestInterface::class);
-        $requestx3->method('getQueryParams')->willReturn([]);
-        $requestx3->method('getParsedBody')->willReturn($parsedBody);
-        $requestx3->method('getAttributes')->willReturn([]);
+    #[TestDox('A Valinor mapper maps the merged parameters onto an object')]
+    public function testValinorMapsTheSource(): void
+    {
+        $request = new ServerRequest(queryParams: ['term' => 'php', 'page' => '2'], parsedBody: ['term' => 'ignored'])
+            ->withAttribute('tenant', 'acme');
 
-        $sourcex3   = new ServerRequestSource($requestx3);
-        $expectedx3 = new ArrayObject(['foo' => 'baz']);
-        Assert::assertEquals($expectedx3, $sourcex3->getIterator());
+        $searchQuery = new MapperBuilder()
+            ->allowScalarValueCasting()
+            ->mapper()
+            ->map(SearchQuery::class, Source::iterable(new ServerRequestSource($request)));
 
-        // Check parsed body is not added if it is not an array
-        $requestx4 = $this->createMock(ServerRequestInterface::class);
-        $requestx4->method('getQueryParams')->willReturn($queryParams);
-        $requestx4->method('getParsedBody')->willReturn(null);
-        $requestx4->method('getAttributes')->willReturn([]);
-
-        $sourcex4   = new ServerRequestSource($requestx4);
-        $expectedx4 = new ArrayObject(['foo' => 'bar']);
-        Assert::assertEquals($expectedx4, $sourcex4->getIterator());
+        Assert::assertEquals(new SearchQuery(term: 'php', page: 2, tenant: 'acme'), $searchQuery);
     }
 }
