@@ -4,7 +4,14 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
-## [2.6.0] - 2026-10-27
+## [2.6.1] - 2026-10-27
+
+### Changed
+
+- Same code as 2.6.0, republished from a history without the `.claude/` directory. 2.6.0 is withdrawn: its tag was moved after Packagist published it, and Packagist keeps published versions immutable.
+- `.claude/` is ignored.
+
+## [2.6.0] - 2026-10-27 [YANKED]
 
 ### Security
 
@@ -23,6 +30,6 @@ All notable changes to this project are documented in this file. The format foll
 
 - Last release before this changelog.
 
-[Unreleased]: https://github.com/delolmo/valinor-http-message/compare/2.6.0...HEAD
-[2.6.0]: https://github.com/delolmo/valinor-http-message/compare/2.3...2.6.0
+[Unreleased]: https://github.com/delolmo/valinor-http-message/compare/2.6.1...HEAD
+[2.6.1]: https://github.com/delolmo/valinor-http-message/compare/2.3...2.6.1
 [2.3]: https://github.com/delolmo/valinor-http-message/releases/tag/2.3
