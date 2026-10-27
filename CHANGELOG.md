@@ -4,6 +4,8 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+## [2.6.0] - 2026-10-27
+
 ### Security
 
 - Require PHP 8.4.27 or later, the release fixing CVE-2026-109618 and CVE-2026-109619.
@@ -21,5 +23,6 @@ All notable changes to this project are documented in this file. The format foll
 
 - Last release before this changelog.
 
-[Unreleased]: https://github.com/delolmo/valinor-http-message/compare/2.3...HEAD
+[Unreleased]: https://github.com/delolmo/valinor-http-message/compare/2.6.0...HEAD
+[2.6.0]: https://github.com/delolmo/valinor-http-message/compare/2.3...2.6.0
 [2.3]: https://github.com/delolmo/valinor-http-message/releases/tag/2.3
