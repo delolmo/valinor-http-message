@@ -1,13 +1,17 @@
 {
     "name": "delolmo/valinor-http-message",
-    "description": "Use psr/http-message as a Valinor source",
+    "description": "Map PSR-7 server requests (query params, parsed body and attributes) to typed PHP objects with cuyz/valinor.",
     "license": "MIT",
     "type": "library",
     "keywords": [
         "valinor",
         "psr-7",
         "http-message",
+        "request",
         "mapper",
+        "object-mapper",
+        "hydration",
+        "dto",
         "source"
     ],
     "authors": [
