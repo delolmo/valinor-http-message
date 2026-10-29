@@ -5,6 +5,29 @@
 
 Use a [PSR-7](https://www.php-fig.org/psr/psr-7/) `ServerRequestInterface` as a source for the [cuyz/valinor](https://github.com/cuyz/valinor) mapper.
 
+> [!WARNING]
+> **This package is deprecated.** Since 2.4, Valinor maps PSR-7 requests itself through [`HttpRequest::fromPsr()`](https://valinor-php.dev/latest/how-to/map-http-request/), which also maps controller arguments and can pin each value to the route, query or body. 2.6.3 is the last release; use `cuyz/valinor` directly instead. See [Migrating to Valinor's HttpRequest](#migrating-to-valinors-httprequest).
+
+## Migrating to Valinor's HttpRequest
+
+Replace the source with `HttpRequest::fromPsr()`, passing the request attributes as the route parameters:
+
+```diff
+-use CuyZ\Valinor\Mapper\Source\Source;
+-use DelOlmo\Valinor\Mapper\Source\ServerRequestSource;
++use CuyZ\Valinor\Mapper\Http\HttpRequest;
+
+-$source = Source::iterable(new ServerRequestSource($request));
++$source = HttpRequest::fromPsr($request, $request->getAttributes());
+
+ $mapped = $mapper->map(CustomObject::class, $source);
+```
+
+Then `composer remove delolmo/valinor-http-message`. Two behaviours change:
+
+- A key found in more than one of the route parameters, query params and parsed body is a mapping error, where this package let attributes win over query params and query params over the parsed body. Send the key in one place, or target it with `#[FromRoute]`, `#[FromQuery]` or `#[FromBody]`.
+- A parsed body that is an object throws `PsrRequestParsedBodyIsObject`, where this package left it out.
+
 ## Requirements
 
 * PHP ~8.4.27 || ^8.5.12
