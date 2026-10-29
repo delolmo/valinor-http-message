@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file. The format foll
 
 ## [Unreleased]
 
+## [2.6.3] - 2026-10-29
+
+### Deprecated
+
+- The package is deprecated in favour of Valinor's own `HttpRequest::fromPsr()`, available since Valinor 2.4. This is the last release; the README explains how to migrate.
+
 ## [2.6.2] - 2026-10-29
 
 ### Changed
@@ -36,7 +42,8 @@ All notable changes to this project are documented in this file. The format foll
 
 - Last release before this changelog.
 
-[Unreleased]: https://github.com/delolmo/valinor-http-message/compare/2.6.2...HEAD
+[Unreleased]: https://github.com/delolmo/valinor-http-message/compare/2.6.3...HEAD
+[2.6.3]: https://github.com/delolmo/valinor-http-message/compare/2.6.2...2.6.3
 [2.6.2]: https://github.com/delolmo/valinor-http-message/compare/2.6.1...2.6.2
 [2.6.1]: https://github.com/delolmo/valinor-http-message/compare/2.3...2.6.1
 [2.3]: https://github.com/delolmo/valinor-http-message/releases/tag/2.3
